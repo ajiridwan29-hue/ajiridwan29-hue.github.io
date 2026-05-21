@@ -445,16 +445,17 @@
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Firebase Configuration (Ambil daripada env global jika ada, jika tiada guna mockup tempatan)
+        // Konfigurasi Firebase yang disambungkan ke pangkalan data rsutrijaya-c22a5
         const firebaseConfig = typeof __firebase_config !== 'undefined' 
             ? JSON.parse(__firebase_config) 
             : {
                 apiKey: "", 
-                authDomain: "rsu-trijaya.firebaseapp.com",
-                projectId: "rsu-trijaya",
-                storageBucket: "rsu-trijaya.appspot.com",
-                messagingSenderId: "1234567890",
-                appId: "1:1234567890:web:abcdef"
+                authDomain: "rsutrijaya-c22a5.firebaseapp.com",
+                databaseURL: "https://rsutrijaya-c22a5-default-rtdb.firebaseio.com/",
+                projectId: "rsutrijaya-c22a5",
+                storageBucket: "rsutrijaya-c22a5.appspot.com",
+                messagingSenderId: "384758291029",
+                appId: "1:384758291029:web:9c1a2b3c4d5e6f"
               };
 
         const app = initializeApp(firebaseConfig);
