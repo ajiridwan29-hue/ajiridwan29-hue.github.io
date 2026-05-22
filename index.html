@@ -665,34 +665,65 @@
         }
 
         // --- PENYEDIA DATA AWAL LOKAL (SEEDERS) ---
-        function seedInitialDoctorsLocal() {
+    function seedInitialDoctorsLocal() {
             doctorsData = [
-                { id: '1', name: "dr. Ingguan Novantri, Sp.OG, Subsp.FER, FMAS, DMAS, MIGS, MARS", specialty: "Spesialis Kebidanan - Konsultan Fertilitas", schedule: "Senin - Jumat: 08:00 - 15:00", photoUrl: "https://medicastore.com/dokter/detail/20291/ingguan-novantri" },
-                { id: '2', name: "Dr. Siti Aminah, Sp.A", specialty: "Spesialis Anak", schedule: "Selasa - Sabtu: 09:00 - 14:00", photoUrl: "https://images.unsplash.com/photo-1594824436998-ef220b30ffeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" }
+                { id: '1', name: "dr. Ingguan Novantri, Sp.OG, K-FER, FMAS, DMAS, MARS", specialty: "Spesialis Kebidanan - Konsultan Fertilitas", schedule: "SETIAP HARI : 08.00 WIB - 12.00 WIB & 17.00 WIB - 20.00 WIB", photoUrl: "https://www.laparoscopyhospital.com/doctor/upload/6996_1_Dr._INGGUAN_NOVANTRI.jpg" },
+                { id: '2', name: "drg. Naufal Delihefian", specialty: " Dokter Gigi", schedule: "Seni - Sabtu: 17:00 WIB - 20:00 WIB & Kamis - Sabtu: 09:00 WIB - 11:00 WIB", photoUrl: "https://scontent.cdninstagram.com/v/t51.82787-15/655217602_18177433423381673_7007796791851500706_n.jpg?stp=c288.0.864.864a_dst-jpg_e35_s640x640_tt6&amp;_nc_cat=108&amp;ccb=7-5&amp;_nc_sid=18de74&amp;efg=eyJlZmdfdGFnIjoiQ0FST1VTRUxfSVRFTS5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&amp;_nc_ohc=GOiF8m6XcKgQ7kNvwG_T0az&amp;_nc_oc=Adrbcfmn6FdzgZTwcsPhcXzWAoavvDI3J9MJdTcYVAEvv463aSKTP77FP9zOHzhqw8I&amp;_nc_zt=23&amp;_nc_ht=scontent.cdninstagram.com&amp;_nc_gid=NSefGt8fGa7vcI9N8V2iUw&amp;_nc_ss=7baaf&amp;oh=00_Af68b0GCRj78Rz_4dWEDneD2df1Apv_Yx16RkP85uwIoDg&amp;oe=6A1587ED" },
+                { id: '3', name: "dr. Hendra Wijaya, Sp.PD", specialty: "Spesialis Penyakit Dalam", schedule: "Jumat: 09:00 - 11:00", photoUrl: "https://placehold.co/400x400/f1f5f9/94a3b8?text=dr.+Hendra" },
+                { id: '4', name: "dr. Maya Indah, Sp.Rad", specialty: "Spesialis Radiologi", schedule: "Senin - Jumat: 08:00 - 14:00", photoUrl: "https://placehold.co/400x400/f1f5f9/94a3b8?text=dr.+Maya" }
             ];
             localStorage.setItem('rs_doctors', JSON.stringify(doctorsData));
         }
 
+
         function seedInitialServicesLocal() {
             servicesData = [
                 { id: '1', name: "Pemeriksaan Umum", desc: "Layanan kesehatan rutin untuk segala usia dan penanganan penyakit umum.", icon: "fa-stethoscope" },
-                { id: '2', name: "Klinik Gigi", desc: "Perawatan kesehatan mulut komprehensif oleh dokter gigi berpengalaman.", icon: "fa-tooth" }
+                { id: '2', name: "POLI Kebidanan", desc: "menyediakan layanan pemeriksaan dan konsultasi kehamilan untuk menjaga kesehatan ibu dan bayi.", icon: "fa-baby-carriage" },
+                { id: '3', name: "POLI Gigi", desc: "Perawatan kesehatan mulut komprehensif oleh dokter gigi berpengalaman", icon: "fa-tooth" },
+                { id: '4', name: "POLI ANAK", desc: "menyediakan layanan pemeriksaan, konsultasi, dan pemantauan kesehatan anak dari bayi hingga remaja, untuk memastikan tumbuh kembang yang optimal.", icon: "fa-baby" },
+                { id: '5', name: "POLI MATA", desc: "menyediakan layanan pemeriksaan, konsultasi, serta penanganan keluhan dan gangguan penglihatan untuk menjaga kesehatan mata Anda.", icon: "fa-eye" },
+                { id: '6', name: "POLI PARU", desc: "menyediakan layanan pemeriksaan, konsultasi, dan penanganan gangguan pernapasan serta penyakit paru untuk menjaga kesehatan sistem pernapasan Anda.", icon: "fa-lungs" },
+                { id: '7', name: "POLI BEDAH", desc: "menyediakan layanan konsultasi, pemeriksaan, dan tindakan bedah sesuai kebutuhan medis, ditangani oleh dokter spesialis bedah yang berpengalaman.", icon: "fa-user-doctor" },
+                { id: '8', name: "POLI SARAF", desc: "menyediakan layanan pemeriksaan dan konsultasi terkait gangguan saraf, seperti sakit kepala, stroke, kejang, dan neuropati, untuk memastikan fungsi sistem saraf tetap optimal", icon: "fa-brain" },
+                { id: '9', name: "POLI ORTHOPEDI", desc: "menyediakan layanan pemeriksaan, konsultasi, dan penanganan masalah tulang, sendi, otot, serta cedera akibat aktivitas maupun kecelakaan.", icon: "fa-bone" },
+                { id: '10', name: "POLI PENYAKIT DALAM", desc: "menyediakan layanan pemeriksaan, konsultasi, serta penanganan berbagai penyakit organ dalam, seperti diabetes, hipertensi, infeksi, dan gangguan metabolik pada pasien dewasa.", icon: "fa-vial" },
+                { id: '11', name: "POLI RADIOLOGI", desc: "menyediakan layanan pemeriksaan pencitraan seperti rontgen, USG, dan CT-scan untuk membantu menegakkan diagnosis secara akurat.", icon: "fa-x-ray" },
+                { id: '12', name: "POLI THT", desc: "menyediakan layanan pemeriksaan dan penanganan gangguan telinga, hidung, dan tenggorokan, termasuk alergi, infeksi, dan masalah pendengaran.", icon: "fa-ear-listen" },
+                { id: '13', name: "POLI MCU", desc: "mmenyediakan layanan pemeriksaan kesehatan menyeluruh untuk deteksi dini penyakit, evaluasi kondisi tubuh, dan pemantauan kesehatan secara rutin.", icon: "fa-notes-medical" },
+                { id: '14', name: "UGD & Ambulans", desc: "menyediakan layanan gawat darurat 24 jam dengan respon cepat, penanganan medis segera, serta fasilitas ambulans siap siaga untuk kebutuhan rujukan maupun penjemputan pasien.", icon: "fa-truck-medical" }
+
             ];
             localStorage.setItem('rs_services', JSON.stringify(servicesData));
         }
 
-        function seedInitialDoctorsFirebase(dbRef) {
+         function seedInitialDoctorsFirebase(dbRef) {
             const initial = {
-                'doc1': { name: "dr. Ingguan Novantri, Sp.OG, Subsp.FER, FMAS, DMAS, MIGS, MARS", specialty: "Spesialis Kebidanan - Konsultan Fertilitas", schedule: "Senin - Jumat: 08:00 - 15:00", photoUrl: "https://medicastore.com/dokter/detail/20291/ingguan-novantri" },
-                'doc2': { name: "Dr. Siti Aminah, Sp.A", specialty: "Spesialis Anak", schedule: "Selasa - Sabtu: 09:00 - 14:00", photoUrl: "https://images.unsplash.com/photo-1594824436998-ef220b30ffeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" }
+                'doc1': { name: "dr. Ingguan Novantri, Sp.OG, K-FER, FMAS, DMAS, MARS", specialty: "Spesialis Kebidanan - Konsultan Fertilitas", schedule: "SETIAP HARI : 08.00 WIB - 12.00 WIB & 17.00 WIB - 20.00 WIB", photoUrl: "" },
+                'doc2': { name: "drg. Naufal Delihefian", specialty: "Dokter Gigi", schedule: "Seni - Sabtu: 17:00 WIB - 20:00 WIB & Kamis - Sabtu: 09:00 WIB - 11:00 WIB", photoUrl: "" },
+                'doc3': { name: "dr. Hendra Wijaya, Sp.PD", specialty: "Spesialis Penyakit Dalam", schedule: "Jumat: 09:00 - 11:00", photoUrl: "" },
+                'doc4': { name: "dr. Maya Indah, Sp.Rad", specialty: "Spesialis Radiologi", schedule: "Senin - Jumat: 08:00 - 14:00", photoUrl: "" }
             };
             set(dbRef, initial);
         }
-
+        
         function seedInitialServicesFirebase(dbRef) {
             const initial = {
                 'srv1': { name: "Pemeriksaan Umum", desc: "Layanan kesehatan rutin.", icon: "fa-stethoscope" },
-                'srv2': { name: "Klinik Gigi", desc: "Perawatan gigi profesional.", icon: "fa-tooth" }
+                'srv2': { name: "POLI Kebidanan", desc: "Persalinan ibu dan anak.", icon: "fa-stethoscope" },
+                'srv3': { name: "POLI Gigi", desc: "Perawatan gigi profesional.", icon: "fa-tooth" },
+                'srv4': { name: "POLI ANAK", desc: "Layanan Kesehatan Anak.", icon: "fa-baby" },
+                'srv5': { name: "POLI MATA", desc: "Layanan Kesehatan Mata.", icon: "fa-eye" },
+                'srv6': { name: "POLI PARU", desc: "Layanan Kesehatan Paru-paru", icon: "fa-lungs" },
+                'srv7': { name: "POLI BEDAH", desc: "Layanan Pemeriksaan Luka Jahitan.", icon: "fa-user-doctor" },
+                'srv8': { name: "POLI SARAF", desc: "Layanan Pemeriksaan Saraf.", icon: "fa-brain" },
+                'srv9': { name: "POLI ORTHOPEDI", desc: "Layanan Pemeriksaan Tulang.", icon: "fa-bone" },
+                'srv10': { name: "POLI PENYAKIT DALAM", desc: "Layanan Pemeriksaan Organ Bagian Dalam.", icon: "fa-vial" },
+                'srv11': { name: "POLI RADIOLOGI", desc: "Layanan Pemeriksaan x-rey.", icon: "fa-x-ray" },
+                'srv12': { name: "POLI THT", desc: "Layanan Pemeriksaan THT.", icon: "fa-ear-listen" },
+                'srv13': { name: "POLI MCU", desc: "Layanan Pemeriksaan Medical Cek Up.", icon: "fa-tooth" },
+                'srv14': { name: "UGD & Ambulans", desc: "Layanan gawatdarurat.", icon: "fa-truck-medical" }
+                
             };
             set(dbRef, initial);
         }
