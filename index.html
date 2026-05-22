@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RSU Trijaya Medical Center</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        primary: '#1d4ed8',     /* Biru Tua */
+                        secondary: '#f97316',   /* Oren */
+                        accent: '#38bdf8',      /* Biru Muda */
+                        accentLight: '#f0f9ff', /* Biru Terang BG */
+                        dark: '#0f172a',        /* Slate Gelap */
+                        light: '#f8fafc',       /* Slate Terang */
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-sans text-gray-800 bg-white">
+
+    <!-- Notifikasi Toast -->
+    <div id="toast" class="fixed top-24 right-4 z-[200] transform transition-all duration-300 translate-x-full opacity-0 bg-white shadow-2xl rounded-xl border-l-4 p-4 flex items-center gap-3 w-80 pointer-events-none">
+        <i id="toastIcon" class="fa-solid fa-circle-check text-xl"></i>
+        <div id="toastMsg" class="text-sm font-medium text-gray-700">Notifikasi</div>
+    </div>
+
+    <!-- Header -->
+    <header class="fixed w-full bg-white/90 backdrop-blur-md shadow-sm z-50 transition-all duration-300" id="header">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="#" class="flex items-center gap-2">
+                        <img src="https://media.licdn.com/dms/image/v2/D4D0BAQE0rCchXCES4g/company-logo_200_200/company-logo_200_200/0/1695772424779?e=2147483647&v=beta&t=tiWujUjOyoOxJ4LHsJH5Hid4ocLSIdxZG_dNgivNUMY" alt="RSU Trijaya" width="50" class="rounded-full shadow-lg hover:scale-110 transition duration-300">
+                        <span id="headerRsName" class="font-bold text-2xl tracking-tight text-dark">RSU Trijaya Medical Center</span>
+                    </a>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex space-x-8 items-center">
+                    <a href="#home" class="text-gray-600 hover:text-secondary font-medium transition-colors">Profil</a>
+                    <a href="#layanan" class="text-gray-600 hover:text-secondary font-medium transition-colors">Layanan</a>
+                    <a href="#dokter" class="text-gray-600 hover:text-secondary font-medium transition-colors">Dokter</a>
+                    <a href="#janji-temu" class="text-gray-600 hover:text-secondary font-medium transition-colors">Lokasi</a>
+                    
+                    <!-- Admin Controls (Hanya kelihatan selepas login) -->
+                    <div id="adminNavControls" class="hidden flex items-center gap-3 border-l pl-4 border-gray-200">
+                        <button onclick="window.openSettingsModal()" class="text-gray-500 hover:text-secondary" title="Pengaturan Website">
+                            <i class="fa-solid fa-gear text-lg"></i>
+                        </button>
+                        <button onclick="window.handleLogout()" class="text-red-400 hover:text-red-600 text-sm font-medium border border-red-200 px-3 py-1 rounded-full transition-colors flex items-center gap-2">
+                            <i class="fa-solid fa-right-from-bracket text-xs"></i> Keluar
+                        </button>
+                    </div>
+                </nav>
+
+                <div class="hidden md:flex items-center gap-4">
+                    <button id="loginBtnNav" onclick="window.openLoginModal()" class="text-gray-400 hover:text-secondary text-sm font-medium border border-gray-200 px-3 py-1 rounded-full transition-colors flex items-center gap-2">
+                        <i class="fa-solid fa-lock text-xs"></i> Login
+                    </button>
+                    <a href="#janji-temu" class="bg-secondary hover:bg-orange-600 text-white px-6 py-2 rounded-full font-medium transition-colors shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+                        Buat Janji
+                    </a>
+                </div>
+                <div class="md:hidden flex items-center gap-4">
+                    <button onclick="window.openLoginModal()" class="text-gray-400 hover:text-secondary"><i class="fa-solid fa-lock"></i></button>
+                    <button id="mobile-menu-button" class="text-gray-600 hover:text-primary focus:outline-none p-2">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full shadow-lg">
+            <div class="px-4 pt-2 pb-6 space-y-2">
+                <a href="#home" class="block px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:text-secondary hover:bg-gray-50">Profil</a>
+                <a href="#layanan" class="block px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:text-secondary hover:bg-gray-50">Layanan</a>
+                <a href="#dokter" class="block px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:text-secondary hover:bg-gray-50">Dokter Kami</a>
+                <a href="#janji-temu" class="block px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:text-secondary hover:bg-gray-50">Lokasi & Janji</a>
+                <a href="#janji-temu" class="block w-full text-center mt-4 bg-secondary text-white px-4 py-3 rounded-full font-medium hover:bg-orange-600">Buat Janji</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="pt-28 pb-20 lg:pt-40 lg:pb-28 bg-gradient-to-b from-blue-50 to-white overflow-hidden">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="max-w-2xl text-center lg:text-left z-10">
+                    <span class="inline-block py-1 px-4 rounded-full bg-orange-100 text-secondary font-semibold text-sm mb-4 shadow-sm border border-orange-200">
+                        <i class="fa-solid fa-heart-pulse mr-2"></i>Kesehatan Anda, Prioritas Kami
+                    </span>
+                    <h1 id="heroRsName1" class="text-4xl sm:text-5xl lg:text-6xl font-bold text-dark leading-tight mb-6">
+                        Rumah Sakit Umum Trijaya Medical
+                    </h1>
+                    <h4 class="text-2xl sm:text-2xl lg:text-3xl font-bold text-dark leading-tight mb-6">
+                        <span class="text-secondary">Berkualitas</span> Untuk Anda & Keluarga
+                    </h4>
+                    <p id="heroRsDesc1" class="text-justify leading-relaxed text-gray-600">
+                        Rumah Sakit Umum Trijaya Medical Center merupakan unit usaha di bawah naungan PT. Rumah Sakit Trijaya Sempurna Global yang awalnya berdiri sebagai Klinik Trijaya Medical Center pada tanggal 23 Maret 2015. Seiring dengan meningkatnya kebutuhan masyarakat terhadap pelayanan kesehatan yang lebih komprehensif, klinik tersebut kemudian dikembangkan menjadi rumah sakit umum.
+                    </p>
+                    <br>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                        <a href="#janji-temu" class="bg-secondary hover:bg-orange-600 text-white px-8 py-4 rounded-full font-semibold text-lg transition-all shadow-lg hover:shadow-xl hover:shadow-orange-200 text-center transform hover:-translate-y-0.5">
+                            Buat Janji Sekarang
+                        </a>
+                        <a href="#layanan" class="bg-white hover:bg-accentLight text-primary border border-primary/20 px-8 py-4 rounded-full font-semibold text-lg transition-all shadow-sm text-center">
+                            Lihat Layanan
+                        </a>
+                    </div>
+                    <br>
+                    <p id="heroRsDesc2" class="text-justify leading-relaxed text-gray-600">
+                      Rumah Sakit Umum Trijaya Medical Center merupakan unit usaha di bawah naungan PT. Rumah Sakit Trijaya Sempurna Global yang awalnya berdiri sebagai Klinik Trijaya Medical Center pada tanggal 23 Maret 2015. Seiring dengan meningkatnya kebutuhan masyarakat terhadap pelayanan kesehatan yang lebih komprehensif, klinik tersebut kemudian dikembangkan menjadi rumah sakit umum.
+                        Pada tanggal 14 Juni 2022, fasilitas pelayanan kesehatan ini resmi beroperasional sebagai Rumah Sakit Umum Trijaya Medical Center Tipe D berdasarkan Surat Izin Operasional Nomor 440/01/KPTS/DPMPTSP-4/2022 yang diterbitkan oleh Dinas Penanaman Modal dan Pelayanan Terpadu Satu Pintu (DPMPTSP) Kabupaten Muara Enim.
+                    </p>
+                    <br>
+                    <h1 class="text-3xl sm:text-3xl lg:text-3xl font-bold text-dark leading-tight mb-6">
+                        VISI <span class="text-secondary">&</span> MISI
+                    </h1>
+                    <h4 class="text-xl font-bold text-dark mb-2">VISI</h4>
+                    <p class="text-justify text-gray-600 mb-6">
+                        Menjadi Rumah Sakit Umum pilihan utama, inovatif, dan unggul yang berkualitas dalam pelayanan kesehatan di Sumatera Selatan.
+                    </p>
+                    <h4 class="text-xl font-bold text-dark mb-2">MISI</h4>
+                    <div class="text-justify text-gray-600">
+                        <ol class="space-y-2">
+                            <li>1. Menyelenggarakan pelayanan yang prima dan profesional.</li>
+                            <li>2. Menggunakan tata kelola manajerial yang profesional dan taat hukum.</li> 
+                            <li>3. Menjadikan pusat rujukan pelayanan kesehatan.</li>
+                            <li>4. Meningkatkan sumber daya manusia profesional dan berorientasi pada kepuasan pelanggan serta mengutamakan keselamatan pasien.</li>
+                            <li>5. Menggunakan sistem informasi & teknologi kedokteran modern guna menunjang pelayanan untuk meningkatkan efektivitas kerja.</li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="relative hidden lg:block z-10">
+                    <div class="absolute inset-0 bg-gradient-to-tr from-accent/20 to-transparent rounded-3xl transform rotate-3 scale-105 -z-10"></div>
+                    <img src="https://www.ulastempat.com/wp-content/uploads/2022/11/foto-salah-satu-rs-di-muara-enim-1667961726-1.jpeg" alt="Gedung RSU Trijaya" class="rounded-3xl shadow-2xl object-cover h-[500px] w-full border-4 border-white">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="layanan" class="py-20 bg-white">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:justify-between md:items-end max-w-7xl mx-auto mb-16 gap-4">
+                <div class="text-center md:text-left">
+                    <h2 class="text-secondary font-semibold tracking-wide uppercase text-sm mb-2"><i class="fa-solid fa-stethoscope mr-1"></i> Layanan Kami</h2>
+                    <h3 class="text-3xl md:text-4xl font-bold text-dark mb-4">Fasilitas Medis Komprehensif</h3>
+                </div>
+                <!-- Tambah Layanan (Admin Sahaja) -->
+                <div id="addServiceBtnContainer" class="hidden">
+                    <button onclick="window.openServiceModal()" class="bg-primary hover:bg-blue-800 text-white px-5 py-2.5 rounded-lg font-medium shadow-md transition flex items-center gap-2">
+                        <i class="fa-solid fa-plus"></i> Tambah Layanan
+                    </button>
+                </div>
+            </div>
+            
+            <div id="services-container" class="grid md:grid-cols-3 gap-8">
+                <!-- Data dimasukkan secara dinamik melalui Firebase/LocalStorage -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Doctors Section -->
+    <section id="dokter" class="py-20 bg-accentLight">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:justify-between md:items-end mb-12 gap-4">
+                <div class="max-w-2xl">
+                    <h2 class="text-secondary font-semibold tracking-wide uppercase text-sm mb-2"><i class="fa-solid fa-user-doctor mr-1"></i> Tim Medis</h2>
+                    <h3 class="text-3xl md:text-4xl font-bold text-dark">Dokter Spesialis Kami</h3>
+                </div>
+                <!-- Tambah Dokter (Admin Sahaja) -->
+                <div id="addDoctorBtnContainer" class="hidden">
+                    <button onclick="window.openDoctorModal()" class="bg-primary hover:bg-blue-800 text-white px-5 py-2.5 rounded-lg font-medium shadow-md transition flex items-center gap-2">
+                        <i class="fa-solid fa-plus"></i> Tambah Dokter
+                    </button>
+                </div>
+            </div>
+
+            <div id="doctors-container" class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Data dimasukkan secara dinamik melalui Firebase/LocalStorage -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Appointment & Map Section -->
+    <section id="janji-temu" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="bg-dark rounded-3xl shadow-xl overflow-hidden p-8 md:p-12 text-center text-white relative mb-16">
+                <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-primary/40 via-accent/20 to-dark/95 -z-10"></div>
+                <h3 class="text-3xl font-bold mb-4">Siap Memulai Perawatan?</h3>
+                <p class="text-gray-300 mb-8 max-w-2xl mx-auto">Daftar sekarang melalui WhatsApp untuk respon cepat dari staf administrasi kami.</p>
+                <button onclick="window.handleAppointment()" class="bg-green-500 hover:bg-green-600 text-white font-semibold py-4 px-8 rounded-full shadow-lg hover:shadow-green-900/30 transition-all inline-flex items-center gap-3 text-lg transform hover:-translate-y-0.5">
+                    <i class="fa-brands fa-whatsapp text-2xl"></i> <span id="waButtonText">Chat WhatsApp Pendaftaran</span>
+                </button>
+            </div>
+
+            <!-- Kartu Peta Lokasi -->
+            <div class="flex justify-center items-center">
+                <div class="max-w-4xl w-full bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 grid md:grid-cols-12">
+                    
+                    <!-- Info Lokasi -->
+                    <div class="md:col-span-5 bg-dark text-white p-8 flex flex-col justify-between relative overflow-hidden">
+                        <div class="absolute -bottom-10 -right-10 w-40 h-40 bg-blue-900/30 rounded-full blur-2xl"></div>
+                        
+                        <div class="space-y-4 relative z-10">
+                            <span class="text-secondary font-bold text-xs uppercase tracking-widest">Lokasi Kami</span>
+                            <h3 class="text-2xl font-extrabold tracking-tight">RSU Trijaya Medical Center</h3>
+                            <p class="text-gray-300 text-xs leading-relaxed">
+                                Kunjungi kami untuk mendapatkan pelayanan medis prima di Tanjung Enim dan sekitarnya.
+                            </p>
+                        </div>
+                        
+                        <div class="mt-8 space-y-4 relative z-10 border-t border-gray-750 pt-6">
+                            <div class="flex gap-3 items-start">
+                                <div class="bg-gray-700 p-2 flex justify-center rounded-lg text-secondary text-sm flex-shrink-0">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Alamat</p>
+                                    <p class="text-xs text-gray-200 leading-relaxed font-medium">
+                                        Jl. Lintas Baturaja No. 541, Tanjung Enim, Kec. Lawang Kidul, Kabupaten Muara Enim, Sumatera Selatan 31712
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="flex gap-3 items-start">
+                                <div class="bg-gray-700 p-2 rounded-lg text-blue-400 text-sm flex-shrink-0">
+                                    <i class="fa-solid fa-phone"></i>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Kontak</p>
+                                    <p class="text-xs text-gray-200 font-medium">082374111666</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Embed Google Maps -->
+                    <div class="md:col-span-7 p-6 md:p-8 flex flex-col justify-between space-y-6">
+                        <div class="space-y-1">
+                            <h4 class="text-lg font-bold text-dark">Navigasi Peta Rute</h4>
+                            <p class="text-xs text-gray-550">Gunakan kawalan peta untuk arah yang lebih jelas.</p>
+                        </div>
+                        
+                        <div class="relative w-full h-64 sm:h-72 rounded-2xl overflow-hidden shadow-inner border border-gray-200">
+                            <iframe 
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15911.391679901579!2d103.79159983177656!3d-3.7196013348160453!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e3be85e92626e25%3A0xc33d679664654b9d!2sRSU%20Trijaya%20Medical%20Center!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid" 
+                                class="absolute inset-0 w-full h-full border-0" 
+                                allowfullscreen="" 
+                                loading="lazy" 
+                                referrerpolicy="no-referrer-when-downgrade">
+                            </iframe>
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                            <span class="text-[11px] text-gray-500 font-medium leading-tight">
+                                Buka terus di dalam aplikasi Google Maps:
+                            </span>
+                            <a href="https://maps.app.goo.gl/6JkZ9rkixMwJGLkEA" target="_blank" class="bg-primary hover:bg-blue-800 text-white text-xs font-bold px-5 py-3 rounded-xl transition inline-flex items-center gap-2 shadow-md w-full sm:w-auto justify-center">
+                                <i class="fa-solid fa-map-location-dot text-sm"></i>
+                                Buka di Google Maps
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FLOATING CHATBOT BUTTON AND CHAT PANEL (AI Assistant) -->
+    <button id="chatbotToggle" onclick="window.toggleChat()" class="fixed bottom-6 right-6 z-50 bg-secondary text-white p-4 rounded-full shadow-2xl hover:bg-orange-600 transition-all hover:scale-110 flex items-center justify-center w-14 h-14 border-2 border-white">
+        <i class="fa-solid fa-robot text-2xl"></i>
+    </button>
+
+    <div id="chatModal" class="fixed bottom-24 right-6 w-[340px] sm:w-[380px] bg-white rounded-3xl shadow-2xl z-50 hidden border border-gray-100 overflow-hidden flex flex-col max-h-[500px]">
+        <!-- Chat Header -->
+        <div class="bg-primary p-4 text-white flex justify-between items-center shadow-md">
+            <div class="flex items-center gap-3">
+                <div class="bg-white/10 p-2 rounded-xl">
+                    <i class="fa-solid fa-user-doctor text-lg"></i>
+                </div>
+                <div>
+                    <span class="font-bold text-sm block">Pakar Kesihatan AI</span>
+                    <span class="text-[10px] text-emerald-300 flex items-center gap-1 font-semibold">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> Online
+                    </span>
+                </div>
+            </div>
+            <button onclick="window.toggleChat()" class="text-white/80 hover:text-white p-1 rounded-full hover:bg-white/10 transition">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+        </div>
+        <!-- Chat Area -->
+        <div id="chatBox" class="flex-1 p-4 overflow-y-auto space-y-4 bg-gray-50 h-80 max-h-80">
+            <div class="flex gap-2.5 items-start">
+                <div class="bg-primary text-white p-2 rounded-xl text-xs mt-1">
+                    <i class="fa-solid fa-hospital-user"></i>
+                </div>
+                <div class="bg-white p-3 rounded-2xl rounded-tl-none shadow-sm text-xs text-gray-700 max-w-[80%] leading-relaxed">
+                    Halo! Saya asisten kesehatan AI RSU Trijaya. Ada yang bisa saya bantu terkait jadwal dokter, fasilitas rumah sakit, atau tips kesehatan hari ini?
+                </div>
+            </div>
+        </div>
+        <!-- Chat Input Form -->
+        <div class="p-3 bg-white border-t border-gray-100 flex gap-2">
+            <input id="chatInput" type="text" onkeydown="if(event.key === 'Enter') window.sendChatMessage()" class="flex-1 border border-gray-200 p-2.5 rounded-xl text-xs focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition" placeholder="Ketik pertanyaan medis Anda...">
+            <button onclick="window.sendChatMessage()" class="bg-primary text-white px-4 py-2.5 rounded-xl hover:bg-blue-800 transition flex items-center justify-center">
+                <i class="fa-solid fa-paper-plane text-xs"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer id="kontak" class="bg-dark text-white pt-16 pb-8 border-t border-gray-800">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-2xl font-bold mb-4">
+                <a href="#" class="flex items-center justify-center gap-3">
+                    <img src="https://media.licdn.com/dms/image/v2/D4D0BAQE0rCchXCES4g/company-logo_200_200/company-logo_200_200/0/1695772424779?e=2147483647&v=beta&t=tiWujUjOyoOxJ4LHsJH5Hid4ocLSIdxZG_dNgivNUMY" alt="RSU Trijaya" width="50" class="rounded-full shadow-lg">
+                    <span id="footerRsName">Rumah Sakit Umum Trijaya Medical Center</span>
+                </a>
+            </h2>
+            <p id="footerRsDesc" class="text-gray-400 mb-6 max-w-md mx-auto">Melayani dengan hati, mengutamakan keselamatan dan kenyamanan anda sekeluarga.</p>
+            <p class="text-gray-500 text-sm">&copy; 2026 <span id="copyrightRsName">Rumah Sakit Umum Trijaya Medical Center</span>. Hak Cipta Dilindungi.</p>
+        </div>
+    </footer>
+
+    <!-- Admin Login Modal -->
+    <div id="loginModal" class="fixed inset-0 bg-dark/60 z-[100] hidden items-center justify-center backdrop-blur-sm transition-opacity">
+        <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full mx-4 transform scale-95 transition-transform">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold text-dark">Login Admin</h3>
+                <button onclick="window.closeLoginModal()" class="text-gray-400 hover:text-red-500"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <form onsubmit="window.handleLogin(event)">
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Masukkan PIN Admin</label>
+                    <input type="password" id="adminPin" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary outline-none text-center tracking-[0.5em] text-lg">
+                </div>
+                <button type="submit" class="w-full bg-primary hover:bg-blue-800 text-white font-semibold py-3 rounded-xl transition-colors">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Settings Modal (Admin) -->
+    <div id="settingsModal" class="fixed inset-0 bg-dark/60 z-[100] hidden items-center justify-center backdrop-blur-sm overflow-y-auto pt-10 pb-10">
+        <div class="bg-white rounded-2xl shadow-2xl p-6 md:p-8 max-w-lg w-full mx-4 my-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold text-dark">Pengaturan Website</h3>
+                <button onclick="window.closeSettingsModal()" class="text-gray-400 hover:text-red-500"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <form id="settingsForm" onsubmit="window.saveSettings(event)">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Nama Rumah Sakit</label>
+                    <input type="text" id="setRsName" required class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary outline-none">
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Profil Singkat / Slogan</label>
+                    <textarea id="setRsDesc" rows="3" required class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary outline-none"></textarea>
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Nomor WhatsApp Layanan</label>
+                    <div class="flex">
+                        <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">+62</span>
+                        <input type="number" id="setWaNumber" required class="w-full px-4 py-2 rounded-r-md border border-gray-300 focus:ring-2 focus:ring-primary outline-none" placeholder="82374111666">
+                    </div>
+                </div>
+
+                <div class="flex gap-3 justify-end">
+                    <button type="button" onclick="window.closeSettingsModal()" class="px-5 py-2 text-gray-600 font-medium hover:bg-gray-100 rounded-lg transition">Batal</button>
+                    <button type="submit" id="setSubmitBtn" class="bg-secondary hover:bg-orange-600 text-white px-5 py-2 rounded-lg font-medium shadow transition flex items-center gap-2">
+                        Simpan Pengaturan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add/Edit Service Modal -->
+    <div id="serviceModal" class="fixed inset-0 bg-dark/60 z-[100] hidden items-center justify-center backdrop-blur-sm overflow-y-auto pt-10 pb-10">
+        <div class="bg-white rounded-2xl shadow-2xl p-6 md:p-8 max-w-md w-full mx-4 my-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h3 id="serviceModalTitle" class="text-xl font-bold text-dark">Tambah Layanan</h3>
+                <button onclick="window.closeServiceModal()" class="text-gray-400 hover:text-red-500"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <form id="serviceForm" onsubmit="window.saveService(event)">
+                <input type="hidden" id="serviceId">
+                
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Nama Layanan/Klinik</label>
+                    <input type="text" id="srvName" required class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary outline-none">
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Deskripsi Singkat</label>
+                    <textarea id="srvDesc" rows="2" required class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary outline-none"></textarea>
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Pilih Ikon (FontAwesome)</label>
+                    <select id="srvIcon" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary outline-none">
+                        <option value="fa-stethoscope">POLI UMUM</option>
+                        <option value="fa-baby-carriage">POLI KEBIDANAN</option>
+                        <option value="fa-tooth">POLI GIGI</option>
+                        <option value="fa-baby">POLI ANAK</option>
+                        <option value="fa-eye">POLI MATA</option>
+                        <option value="fa-lungs">POLI PARU</option>
+                        <option value="fa-user-doctor">POLI BEDAH</option>
+                        <option value="fa-brain">POLI SARAF</option>
+                        <option value="fa-bone">POLI ORTHOPEDI</option>
+                        <option value="fa-vial">POLI PENYAKIT DALAM</option>
+                        <option value="fa-truck-medical">Ambulans</option>
+                        <option value="fa-x-ray">POLI RADIOLOGI</option>
+                        <option value="fa-bed-pulse">Rawat Inap</option>
+                        <option value="fa-ear-listen">POLI THT</option>
+                        <option value="fa-notes-medical">POLI MCU</option>
+                    </select>
+                </div>
+
+                <div class="flex gap-3 justify-end">
+                    <button type="button" onclick="window.closeServiceModal()" class="px-5 py-2 text-gray-600 font-medium hover:bg-gray-100 rounded-lg transition">Batal</button>
+                    <button type="submit" id="srvSubmitBtn" class="bg-secondary hover:bg-orange-600 text-white px-5 py-2 rounded-lg font-medium shadow transition flex items-center gap-2">
+                        Simpan Layanan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add/Edit Doctor Modal -->
+    <div id="doctorModal" class="fixed inset-0 bg-dark/60 z-[100] hidden items-center justify-center backdrop-blur-sm overflow-y-auto pt-10 pb-10">
+        <div class="bg-white rounded-2xl shadow-2xl p-6 md:p-8 max-w-lg w-full mx-4 my-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h3 id="doctorModalTitle" class="text-xl font-bold text-dark">Tambah Dokter</h3>
+                <button onclick="window.closeDoctorModal()" class="text-gray-400 hover:text-red-500"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <form id="doctorForm" onsubmit="window.saveDoctor(event)">
+                <input type="hidden" id="doctorId">
+                
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap & Gelar</label>
+                    <input type="text" id="docName" required class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary outline-none">
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Spesialisasi</label>
+                    <input type="text" id="docSpecialty" required class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary outline-none">
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Jadwal Praktik</label>
+                    <input type="text" id="docSchedule" required class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary outline-none">
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Foto Profil (Opsional)</label>
+                    <div class="flex items-center gap-4">
+                        <img id="docPreview" src="https://placehold.co/150x150/f1f5f9/94a3b8?text=Foto" class="w-16 h-16 object-cover rounded-full border-2 border-primary">
+                        <input type="file" id="docPhoto" accept="image/*" class="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-primary hover:file:bg-blue-100">
+                    </div>
+                    <input type="hidden" id="docPhotoBase64">
+                </div>
+
+                <div class="flex gap-3 justify-end">
+                    <button type="button" onclick="window.closeDoctorModal()" class="px-5 py-2 text-gray-600 font-medium hover:bg-gray-100 rounded-lg transition">Batal</button>
+                    <button type="submit" id="docSubmitBtn" class="bg-secondary hover:bg-orange-600 text-white px-5 py-2 rounded-lg font-medium shadow transition flex items-center gap-2">
+                        Simpan Data
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Firebase Integration Module Script (Versi GitHub / Standalone) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
+
+        // =========================================================================
+        // KONFIGURASI FIREBASE UNTUK GITHUB PAGES
+        // PENTING: Anda MESTI memasukkan `apiKey` sebenar dari Firebase Console anda 
+        // untuk membolehkan pangkalan data berfungsi di luar platform ini.
+        // =========================================================================
+        const firebaseConfig = {
+            apiKey: "SILA_MASUKKAN_API_KEY_FIREBASE_ANDA_DI_SINI", // <-- WAJIB TUKAR INI!
+            authDomain: "rsutrijaya-c22a5.firebaseapp.com",
+            databaseURL: "https://rsutrijaya-c22a5-default-rtdb.firebaseio.com/",
+            projectId: "rsutrijaya-c22a5",
+            storageBucket: "rsutrijaya-c22a5.appspot.com",
+            messagingSenderId: "SENDER_ID", // Pilihan
+            appId: "APP_ID" // Pilihan
+        };
+
+        let app, auth, db;
+        let isFirebaseConnected = false;
+        let isAdmin = false;
+        let doctorsData = [];
+        let servicesData = [];
+        let siteSettings = {
+            name: "RSU Trijaya Medical Center",
+            desc: "RSU Trijaya Medical Center selalu menyediakan fasilitas modern, tenaga medis profesional, dan perawatan penuh kasih.",
+            waNumber: "82374111666"
+        };
+
+        const appId = 'rsu-trijaya-medical-center';
+
+        const ui = {
+            toast: document.getElementById('toast'),
+            toastMsg: document.getElementById('toastMsg'),
+            toastIcon: document.getElementById('toastIcon'),
+            docContainer: document.getElementById('doctors-container'),
+            addDocBtn: document.getElementById('addDoctorBtnContainer'),
+            docModal: document.getElementById('doctorModal'),
+            docForm: document.getElementById('doctorForm'),
+            srvContainer: document.getElementById('services-container'),
+            addSrvBtn: document.getElementById('addServiceBtnContainer'),
+            srvModal: document.getElementById('serviceModal'),
+            srvForm: document.getElementById('serviceForm'),
+            settingsModal: document.getElementById('settingsModal'),
+            settingsForm: document.getElementById('settingsForm'),
+            loginModal: document.getElementById('loginModal'),
+            loginBtnNav: document.getElementById('loginBtnNav'),
+            adminNavControls: document.getElementById('adminNavControls'),
+            els: {
+                headerName: document.getElementById('headerRsName'),
+                footerName: document.getElementById('footerRsName'),
+                footerDesc: document.getElementById('footerRsDesc'),
+                copyName: document.getElementById('copyrightRsName'),
+                heroName1: document.getElementById('heroRsName1'),
+                heroDesc1: document.getElementById('heroRsDesc1')
+            }
+        };
+
+        window.showToast = (msg, type = 'success') => {
+            ui.toastMsg.innerText = msg;
+            if (type === 'success') {
+                ui.toast.className = "fixed top-24 right-4 z-[200] transform transition-all duration-300 bg-white shadow-xl rounded-xl border-l-4 border-green-500 p-4 flex items-center gap-3 w-80 translate-x-0 opacity-100";
+                ui.toastIcon.className = "fa-solid fa-circle-check text-xl text-green-500";
+            } else {
+                ui.toast.className = "fixed top-24 right-4 z-[200] transform transition-all duration-300 bg-white shadow-xl rounded-xl border-l-4 border-red-500 p-4 flex items-center gap-3 w-80 translate-x-0 opacity-100";
+                ui.toastIcon.className = "fa-solid fa-circle-exclamation text-xl text-red-500";
+            }
+            setTimeout(() => {
+                ui.toast.classList.replace('translate-x-0', 'translate-x-full');
+                ui.toast.classList.replace('opacity-100', 'opacity-0');
+            }, 3000);
+        };
+
+        // Permulaan Aplikasi pada GitHub
+        const initGitHubApp = async () => {
+            try {
+                // Periksa jika API Key belum ditukar
+                if(firebaseConfig.apiKey.includes("SILA_MASUKKAN")) {
+                    console.warn("API Key belum disetkan! Laman web akan menggunakan mode Offline (LocalStorage).");
+                    fallbackToLocalStorage();
+                    return;
+                }
+
+                app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getDatabase(app);
+
+                // Log masuk tanpa nama untuk mengakses Realtime Database
+                await signInAnonymously(auth);
+
+                onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        isFirebaseConnected = true;
+                        setupFirebaseRealtimeListeners();
+                        console.log("Berjaya bersambung ke Firebase RTDB!");
+                    } else {
+                        fallbackToLocalStorage();
+                    }
+                });
+            } catch (err) {
+                console.warn("Gagal bersambung ke Firebase. Beralih ke LocalStorage.", err);
+                fallbackToLocalStorage();
+            }
+        };
+
+        // Mod Luar Talian (Offline Fallback)
+        function fallbackToLocalStorage() {
+            isFirebaseConnected = false;
+            
+            const savedDoctors = localStorage.getItem('rs_doctors');
+            const savedServices = localStorage.getItem('rs_services');
+            const savedSettings = localStorage.getItem('rs_settings');
+
+            if (savedDoctors) doctorsData = JSON.parse(savedDoctors);
+            if (savedServices) servicesData = JSON.parse(savedServices);
+            if (savedSettings) siteSettings = JSON.parse(savedSettings);
+
+            if (doctorsData.length === 0) seedInitialDoctorsLocal();
+            if (servicesData.length === 0) seedInitialServicesLocal();
+
+            updateUIWithSettings();
+            renderDoctors();
+            renderServices();
+        }
+
+        // --- FIREBASE REALTIME DATABASE SYNC ---
+        function setupFirebaseRealtimeListeners() {
+            const settingsDbRef = ref(db, `public/data/siteSettings/global`);
+            const servicesDbRef = ref(db, `public/data/services`);
+            const doctorsDbRef = ref(db, `public/data/doctors`);
+
+            // 1. Settings Sync
+            onValue(settingsDbRef, (snapshot) => {
+                if (snapshot.exists()) {
+                    siteSettings = snapshot.val();
+                    updateUIWithSettings();
+                } else {
+                    set(settingsDbRef, siteSettings);
+                    updateUIWithSettings();
+                }
+            }, (err) => {
+                console.error("Ralat membaca tetapan:", err);
+                fallbackToLocalStorage();
+            });
+
+            // 2. Services Sync
+            onValue(servicesDbRef, (snapshot) => {
+                servicesData = [];
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    Object.keys(data).forEach(key => {
+                        servicesData.push({ id: key, ...data[key] });
+                    });
+                }
+                if (servicesData.length === 0) {
+                    seedInitialServicesFirebase(servicesDbRef);
+                } else {
+                    renderServices();
+                }
+            });
+
+            // 3. Doctors Sync
+            onValue(doctorsDbRef, (snapshot) => {
+                doctorsData = [];
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    Object.keys(data).forEach(key => {
+                        doctorsData.push({ id: key, ...data[key] });
+                    });
+                }
+                if (doctorsData.length === 0) {
+                    seedInitialDoctorsFirebase(doctorsDbRef);
+                } else {
+                    renderDoctors();
+                }
+            });
+        }
+
+        // --- PENYEDIA DATA AWAL LOKAL (SEEDERS) ---
+    function seedInitialDoctorsLocal() {
+            doctorsData = [
+                { id: '1', name: "dr. Ingguan Novantri, Sp.OG, K-FER, FMAS, DMAS, MARS", specialty: "Spesialis Kebidanan - Konsultan Fertilitas", schedule: "SETIAP HARI : 08.00 WIB - 12.00 WIB & 17.00 WIB - 20.00 WIB", photoUrl: "https://www.laparoscopyhospital.com/doctor/upload/6996_1_Dr._INGGUAN_NOVANTRI.jpg" },
+                { id: '2', name: "drg. Naufal Delihefian", specialty: " Dokter Gigi", schedule: "Seni - Sabtu: 17:00 WIB - 20:00 WIB & Kamis - Sabtu: 09:00 WIB - 11:00 WIB", photoUrl: "https://scontent.cdninstagram.com/v/t51.82787-15/655217602_18177433423381673_7007796791851500706_n.jpg?stp=c288.0.864.864a_dst-jpg_e35_s640x640_tt6&amp;_nc_cat=108&amp;ccb=7-5&amp;_nc_sid=18de74&amp;efg=eyJlZmdfdGFnIjoiQ0FST1VTRUxfSVRFTS5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&amp;_nc_ohc=GOiF8m6XcKgQ7kNvwG_T0az&amp;_nc_oc=Adrbcfmn6FdzgZTwcsPhcXzWAoavvDI3J9MJdTcYVAEvv463aSKTP77FP9zOHzhqw8I&amp;_nc_zt=23&amp;_nc_ht=scontent.cdninstagram.com&amp;_nc_gid=NSefGt8fGa7vcI9N8V2iUw&amp;_nc_ss=7baaf&amp;oh=00_Af68b0GCRj78Rz_4dWEDneD2df1Apv_Yx16RkP85uwIoDg&amp;oe=6A1587ED" },
+                { id: '3', name: "dr. Hendra Wijaya, Sp.PD", specialty: "Spesialis Penyakit Dalam", schedule: "Jumat: 09:00 - 11:00", photoUrl: "https://placehold.co/400x400/f1f5f9/94a3b8?text=dr.+Hendra" },
+                { id: '4', name: "dr. Maya Indah, Sp.Rad", specialty: "Spesialis Radiologi", schedule: "Senin - Jumat: 08:00 - 14:00", photoUrl: "https://placehold.co/400x400/f1f5f9/94a3b8?text=dr.+Maya" }
+            ];
+            localStorage.setItem('rs_doctors', JSON.stringify(doctorsData));
+        }
+
+
+        function seedInitialServicesLocal() {
+            servicesData = [
+                { id: '1', name: "Pemeriksaan Umum", desc: "Layanan kesehatan rutin untuk segala usia dan penanganan penyakit umum.", icon: "fa-stethoscope" },
+                { id: '2', name: "POLI Kebidanan", desc: "menyediakan layanan pemeriksaan dan konsultasi kehamilan untuk menjaga kesehatan ibu dan bayi.", icon: "fa-baby-carriage" },
+                { id: '3', name: "POLI Gigi", desc: "Perawatan kesehatan mulut komprehensif oleh dokter gigi berpengalaman", icon: "fa-tooth" },
+                { id: '4', name: "POLI ANAK", desc: "menyediakan layanan pemeriksaan, konsultasi, dan pemantauan kesehatan anak dari bayi hingga remaja, untuk memastikan tumbuh kembang yang optimal.", icon: "fa-baby" },
+                { id: '5', name: "POLI MATA", desc: "menyediakan layanan pemeriksaan, konsultasi, serta penanganan keluhan dan gangguan penglihatan untuk menjaga kesehatan mata Anda.", icon: "fa-eye" },
+                { id: '6', name: "POLI PARU", desc: "menyediakan layanan pemeriksaan, konsultasi, dan penanganan gangguan pernapasan serta penyakit paru untuk menjaga kesehatan sistem pernapasan Anda.", icon: "fa-lungs" },
+                { id: '7', name: "POLI BEDAH", desc: "menyediakan layanan konsultasi, pemeriksaan, dan tindakan bedah sesuai kebutuhan medis, ditangani oleh dokter spesialis bedah yang berpengalaman.", icon: "fa-user-doctor" },
+                { id: '8', name: "POLI SARAF", desc: "menyediakan layanan pemeriksaan dan konsultasi terkait gangguan saraf, seperti sakit kepala, stroke, kejang, dan neuropati, untuk memastikan fungsi sistem saraf tetap optimal", icon: "fa-brain" },
+                { id: '9', name: "POLI ORTHOPEDI", desc: "menyediakan layanan pemeriksaan, konsultasi, dan penanganan masalah tulang, sendi, otot, serta cedera akibat aktivitas maupun kecelakaan.", icon: "fa-bone" },
+                { id: '10', name: "POLI PENYAKIT DALAM", desc: "menyediakan layanan pemeriksaan, konsultasi, serta penanganan berbagai penyakit organ dalam, seperti diabetes, hipertensi, infeksi, dan gangguan metabolik pada pasien dewasa.", icon: "fa-vial" },
+                { id: '11', name: "POLI RADIOLOGI", desc: "menyediakan layanan pemeriksaan pencitraan seperti rontgen, USG, dan CT-scan untuk membantu menegakkan diagnosis secara akurat.", icon: "fa-x-ray" },
+                { id: '12', name: "POLI THT", desc: "menyediakan layanan pemeriksaan dan penanganan gangguan telinga, hidung, dan tenggorokan, termasuk alergi, infeksi, dan masalah pendengaran.", icon: "fa-ear-listen" },
+                { id: '13', name: "POLI MCU", desc: "mmenyediakan layanan pemeriksaan kesehatan menyeluruh untuk deteksi dini penyakit, evaluasi kondisi tubuh, dan pemantauan kesehatan secara rutin.", icon: "fa-notes-medical" },
+                { id: '14', name: "UGD & Ambulans", desc: "menyediakan layanan gawat darurat 24 jam dengan respon cepat, penanganan medis segera, serta fasilitas ambulans siap siaga untuk kebutuhan rujukan maupun penjemputan pasien.", icon: "fa-truck-medical" }
+
+            ];
+            localStorage.setItem('rs_services', JSON.stringify(servicesData));
+        }
+
+         function seedInitialDoctorsFirebase(dbRef) {
+            const initial = {
+                'doc1': { name: "dr. Ingguan Novantri, Sp.OG, K-FER, FMAS, DMAS, MARS", specialty: "Spesialis Kebidanan - Konsultan Fertilitas", schedule: "SETIAP HARI : 08.00 WIB - 12.00 WIB & 17.00 WIB - 20.00 WIB", photoUrl: "" },
+                'doc2': { name: "drg. Naufal Delihefian", specialty: "Dokter Gigi", schedule: "Seni - Sabtu: 17:00 WIB - 20:00 WIB & Kamis - Sabtu: 09:00 WIB - 11:00 WIB", photoUrl: "" },
+                'doc3': { name: "dr. Hendra Wijaya, Sp.PD", specialty: "Spesialis Penyakit Dalam", schedule: "Jumat: 09:00 - 11:00", photoUrl: "" },
+                'doc4': { name: "dr. Maya Indah, Sp.Rad", specialty: "Spesialis Radiologi", schedule: "Senin - Jumat: 08:00 - 14:00", photoUrl: "" }
+            };
+            set(dbRef, initial);
+        }
+        
+        function seedInitialServicesFirebase(dbRef) {
+            const initial = {
+                'srv1': { name: "Pemeriksaan Umum", desc: "Layanan kesehatan rutin.", icon: "fa-stethoscope" },
+                'srv2': { name: "POLI Kebidanan", desc: "Persalinan ibu dan anak.", icon: "fa-stethoscope" },
+                'srv3': { name: "POLI Gigi", desc: "Perawatan gigi profesional.", icon: "fa-tooth" },
+                'srv4': { name: "POLI ANAK", desc: "Layanan Kesehatan Anak.", icon: "fa-baby" },
+                'srv5': { name: "POLI MATA", desc: "Layanan Kesehatan Mata.", icon: "fa-eye" },
+                'srv6': { name: "POLI PARU", desc: "Layanan Kesehatan Paru-paru", icon: "fa-lungs" },
+                'srv7': { name: "POLI BEDAH", desc: "Layanan Pemeriksaan Luka Jahitan.", icon: "fa-user-doctor" },
+                'srv8': { name: "POLI SARAF", desc: "Layanan Pemeriksaan Saraf.", icon: "fa-brain" },
+                'srv9': { name: "POLI ORTHOPEDI", desc: "Layanan Pemeriksaan Tulang.", icon: "fa-bone" },
+                'srv10': { name: "POLI PENYAKIT DALAM", desc: "Layanan Pemeriksaan Organ Bagian Dalam.", icon: "fa-vial" },
+                'srv11': { name: "POLI RADIOLOGI", desc: "Layanan Pemeriksaan x-rey.", icon: "fa-x-ray" },
+                'srv12': { name: "POLI THT", desc: "Layanan Pemeriksaan THT.", icon: "fa-ear-listen" },
+                'srv13': { name: "POLI MCU", desc: "Layanan Pemeriksaan Medical Cek Up.", icon: "fa-tooth" },
+                'srv14': { name: "UGD & Ambulans", desc: "Layanan gawatdarurat.", icon: "fa-truck-medical" }
+                
+            };
+            set(dbRef, initial);
+        }
+
+        function updateUIWithSettings() {
+            const { name, desc } = siteSettings;
+            document.title = `${name}`;
+            if (ui.els.headerName) ui.els.headerName.innerText = name;
+            if (ui.els.heroName1) ui.els.heroName1.innerText = name;
+            if (ui.els.heroDesc1) ui.els.heroDesc1.innerText = desc;
+            if (ui.els.footerName) ui.els.footerName.innerText = name;
+            if (ui.els.footerDesc) ui.els.footerDesc.innerText = desc;
+            if (ui.els.copyName) ui.els.copyName.innerText = name;
+        }
+
+        window.openSettingsModal = () => {
+            document.getElementById('setRsName').value = siteSettings.name || '';
+            document.getElementById('setRsDesc').value = siteSettings.desc || '';
+            document.getElementById('setWaNumber').value = siteSettings.waNumber || '';
+            ui.settingsModal.classList.replace('hidden', 'flex');
+        };
+        
+        window.closeSettingsModal = () => ui.settingsModal.classList.replace('flex', 'hidden');
+
+        window.saveSettings = async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('setSubmitBtn');
+            btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...';
+
+            const updated = {
+                name: document.getElementById('setRsName').value,
+                desc: document.getElementById('setRsDesc').value,
+                waNumber: document.getElementById('setWaNumber').value
+            };
+
+            if (isFirebaseConnected) {
+                try {
+                    await set(ref(db, `public/data/siteSettings/global`), updated);
+                    window.showToast("Pengaturan disimpan ke Firebase!");
+                } catch (err) {
+                    window.showToast("Ralat menyimpan. Pastikan Rule Database membenarkan Write.", "error");
+                }
+            } else {
+                siteSettings = updated;
+                localStorage.setItem('rs_settings', JSON.stringify(siteSettings));
+                updateUIWithSettings();
+                window.showToast("Disimpan secara lokal!");
+            }
+
+            window.closeSettingsModal();
+            btn.disabled = false; btn.innerHTML = 'Simpan Pengaturan';
+        };
+
+        function renderServices() {
+            ui.srvContainer.innerHTML = '';
+            if (servicesData.length === 0) {
+                ui.srvContainer.innerHTML = `<div class="col-span-full text-center text-gray-500 py-8">Belum ada data layanan.</div>`;
+                return;
+            }
+
+            servicesData.forEach(srv => {
+                const card = document.createElement('div');
+                card.className = "bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 group relative";
+                
+                let html = `
+                    <div class="w-14 h-14 bg-sky-50 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary transition-colors">
+                        <i class="fa-solid ${srv.icon} text-2xl text-primary group-hover:text-white"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-dark mb-3">${srv.name}</h4>
+                    <p class="text-gray-600 text-sm">${srv.desc}</p>
+                `;
+
+                if (isAdmin) {
+                    html += `
+                        <div class="absolute top-4 right-4 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button onclick="window.editService('${srv.id}')" class="bg-sky-100 text-sky-700 hover:bg-sky-600 hover:text-white p-2 rounded shadow-sm transition"><i class="fa-solid fa-pen text-xs"></i></button>
+                            <button onclick="window.deleteService('${srv.id}')" class="bg-red-100 text-red-600 hover:bg-red-600 hover:text-white p-2 rounded shadow-sm transition"><i class="fa-solid fa-trash text-xs"></i></button>
+                        </div>
+                    `;
+                }
+                card.innerHTML = html;
+                ui.srvContainer.appendChild(card);
+            });
+        }
+
+        window.openServiceModal = () => {
+            ui.srvForm.reset();
+            document.getElementById('serviceId').value = '';
+            document.getElementById('serviceModalTitle').innerText = 'Tambah Layanan Baru';
+            ui.srvModal.classList.replace('hidden', 'flex');
+        };
+        window.closeServiceModal = () => ui.srvModal.classList.replace('flex', 'hidden');
+
+        window.editService = (id) => {
+            const srv = servicesData.find(s => s.id === id);
+            if (!srv) return;
+            document.getElementById('serviceId').value = id;
+            document.getElementById('srvName').value = srv.name;
+            document.getElementById('srvDesc').value = srv.desc;
+            document.getElementById('srvIcon').value = srv.icon;
+            document.getElementById('serviceModalTitle').innerText = 'Edit Layanan';
+            ui.srvModal.classList.replace('hidden', 'flex');
+        };
+
+        window.saveService = async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('srvSubmitBtn');
+            btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...';
+
+            const id = document.getElementById('serviceId').value || `srv_${Date.now()}`;
+            const data = {
+                name: document.getElementById('srvName').value,
+                desc: document.getElementById('srvDesc').value,
+                icon: document.getElementById('srvIcon').value
+            };
+
+            if (isFirebaseConnected) {
+                try {
+                    await set(ref(db, `public/data/services/${id}`), data);
+                    window.showToast("Layanan disimpan ke Firebase!");
+                } catch (err) {
+                    window.showToast("Ralat! Semak Rule Firebase.", "error");
+                }
+            } else {
+                const existingIndex = servicesData.findIndex(s => s.id === id);
+                if (existingIndex !== -1) {
+                    servicesData[existingIndex] = { id, ...data };
+                } else {
+                    servicesData.push({ id, ...data });
+                }
+                localStorage.setItem('rs_services', JSON.stringify(servicesData));
+                renderServices();
+                window.showToast("Disimpan secara lokal!");
+            }
+
+            window.closeServiceModal();
+            btn.disabled = false; btn.innerHTML = 'Simpan Layanan';
+        };
+
+        window.deleteService = async (id) => {
+            if (isFirebaseConnected) {
+                try {
+                    await set(ref(db, `public/data/services/${id}`), null);
+                    window.showToast("Layanan dihapus dari Firebase!");
+                } catch (err) {
+                    window.showToast("Gagal menghapus.", "error");
+                }
+            } else {
+                servicesData = servicesData.filter(s => s.id !== id);
+                localStorage.setItem('rs_services', JSON.stringify(servicesData));
+                renderServices();
+                window.showToast("Layanan dihapus secara lokal!");
+            }
+        };
+
+        function renderDoctors() {
+            ui.docContainer.innerHTML = '';
+            
+            if (doctorsData.length === 0) {
+                ui.docContainer.innerHTML = `<div class="col-span-full text-center text-gray-500 py-8">Belum ada data dokter.</div>`;
+                return;
+            }
+
+            doctorsData.forEach(doc => {
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 group flex flex-col";
+                
+                let html = `
+                    <div class="relative overflow-hidden h-64 bg-gray-100">
+                        <img src="${doc.photoUrl || 'https://placehold.co/400x400/f1f5f9/94a3b8?text=Tanpa+Foto'}" alt="${doc.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <div class="p-6 text-center flex-grow flex flex-col justify-between">
+                        <div>
+                            <h4 class="text-lg font-bold text-dark mb-1">${doc.name}</h4>
+                            <p class="text-secondary font-semibold text-sm mb-3">${doc.specialty}</p>
+                            <p class="text-xs text-gray-500 bg-sky-50/50 p-2 rounded-lg border border-sky-100/30"><i class="fa-regular fa-clock mr-1"></i> ${doc.schedule}</p>
+                        </div>
+                `;
+
+                if (isAdmin) {
+                    html += `
+                        <div class="mt-4 pt-4 border-t border-gray-100 flex gap-2 justify-center">
+                            <button onclick="window.editDoctor('${doc.id}')" class="text-xs bg-sky-50 text-sky-700 hover:bg-sky-600 hover:text-white px-3 py-1.5 rounded transition"><i class="fa-solid fa-pen"></i> Edit</button>
+                            <button onclick="window.deleteDoctor('${doc.id}')" class="text-xs bg-red-50 text-red-600 hover:bg-red-600 hover:text-white px-3 py-1.5 rounded transition"><i class="fa-solid fa-trash"></i> Hapus</button>
+                        </div>
+                    `;
+                }
+                
+                html += `</div>`;
+                card.innerHTML = html;
+                ui.docContainer.appendChild(card);
+            });
+        }
+
+        function toggleAdminUI(isLoggedIn) {
+            isAdmin = isLoggedIn;
+            if(isLoggedIn) {
+                ui.loginBtnNav.classList.add('hidden');
+                ui.adminNavControls.classList.remove('hidden');
+                ui.addDocBtn.classList.remove('hidden');
+                ui.addSrvBtn.classList.remove('hidden');
+            } else {
+                ui.loginBtnNav.classList.remove('hidden');
+                ui.adminNavControls.classList.add('hidden');
+                ui.addDocBtn.classList.add('hidden');
+                ui.addSrvBtn.classList.add('hidden');
+            }
+            renderDoctors();
+            renderServices();
+        }
+
+        window.openLoginModal = () => ui.loginModal.classList.replace('hidden', 'flex');
+        window.closeLoginModal = () => { ui.loginModal.classList.replace('flex', 'hidden'); document.getElementById('adminPin').value = ''; };
+        
+        window.handleLogin = (e) => {
+            e.preventDefault();
+            const pin = document.getElementById('adminPin').value;
+            if(pin === 'jaya2026') {
+                window.closeLoginModal();
+                toggleAdminUI(true);
+                window.showToast("Berhasil masuk sebagai Admin");
+            } else {
+                window.showToast("PIN Admin Salah!", "error");
+            }
+        };
+
+        window.handleLogout = () => {
+            toggleAdminUI(false);
+            window.showToast("Berhasil keluar dari mode Admin");
+        };
+
+        window.openDoctorModal = () => {
+            ui.docForm.reset();
+            document.getElementById('doctorId').value = '';
+            document.getElementById('docPreview').src = 'https://placehold.co/150x150/f1f5f9/94a3b8?text=Foto';
+            document.getElementById('docPhotoBase64').value = '';
+            document.getElementById('doctorModalTitle').innerText = 'Tambah Dokter Baru';
+            ui.docModal.classList.replace('hidden', 'flex');
+        };
+
+        window.closeDoctorModal = () => ui.docModal.classList.replace('flex', 'hidden');
+
+        window.editDoctor = (id) => {
+            const docData = doctorsData.find(d => d.id === id);
+            if (!docData) return;
+            
+            document.getElementById('doctorId').value = id;
+            document.getElementById('docName').value = docData.name;
+            document.getElementById('docSpecialty').value = docData.specialty;
+            document.getElementById('docSchedule').value = docData.schedule;
+            document.getElementById('docPreview').src = docData.photoUrl || 'https://placehold.co/150x150/f1f5f9/94a3b8?text=Foto';
+            document.getElementById('docPhotoBase64').value = docData.photoUrl || '';
+            document.getElementById('doctorModalTitle').innerText = 'Edit Data Dokter';
+            
+            ui.docModal.classList.replace('hidden', 'flex');
+        };
+
+        document.getElementById('docPhoto').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const MAX_SIZE = 400;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > height) {
+                        if (width > MAX_SIZE) { height *= MAX_SIZE / width; width = MAX_SIZE; }
+                    } else {
+                        if (height > MAX_SIZE) { width *= MAX_SIZE / height; height = MAX_SIZE; }
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    
+                    const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+                    document.getElementById('docPreview').src = dataUrl;
+                    document.getElementById('docPhotoBase64').value = dataUrl;
+                }
+                img.src = event.target.result;
+            }
+            reader.readAsDataURL(file);
+        });
+
+        window.saveDoctor = async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('docSubmitBtn');
+            btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...';
+
+            const id = document.getElementById('doctorId').value || `doc_${Date.now()}`;
+            const data = {
+                name: document.getElementById('docName').value,
+                specialty: document.getElementById('docSpecialty').value,
+                schedule: document.getElementById('docSchedule').value,
+                photoUrl: document.getElementById('docPhotoBase64').value
+            };
+
+            if (isFirebaseConnected) {
+                try {
+                    await set(ref(db, `public/data/doctors/${id}`), data);
+                    window.showToast("Dokter disimpan ke Firebase!");
+                } catch (err) {
+                    window.showToast("Gagal menyimpan. Semak Rule Database.", "error");
+                }
+            } else {
+                const existingIndex = doctorsData.findIndex(d => d.id === id);
+                if (existingIndex !== -1) {
+                    doctorsData[existingIndex] = { id, ...data };
+                } else {
+                    doctorsData.push({ id, ...data });
+                }
+                localStorage.setItem('rs_doctors', JSON.stringify(doctorsData));
+                renderDoctors();
+                window.showToast("Disimpan secara lokal!");
+            }
+
+            window.closeDoctorModal();
+            btn.disabled = false; btn.innerHTML = 'Simpan Data';
+        };
+
+        window.deleteDoctor = async (id) => {
+            if (isFirebaseConnected) {
+                try {
+                    await set(ref(db, `public/data/doctors/${id}`), null);
+                    window.showToast("Dokter dipadam dari Firebase!");
+                } catch (err) {
+                    window.showToast("Gagal menghapus.", "error");
+                }
+            } else {
+                doctorsData = doctorsData.filter(d => d.id !== id);
+                localStorage.setItem('rs_doctors', JSON.stringify(doctorsData));
+                renderDoctors();
+                window.showToast("Dihapus secara lokal.");
+            }
+        };
+
+        window.handleAppointment = () => {
+            const num = siteSettings.waNumber || "82374111666";
+            const text = encodeURIComponent(`Halo ${siteSettings.name}, saya ingin mendaftar untuk janji temu medis.`);
+            window.showToast("Membuka WhatsApp...");
+            setTimeout(() => {
+                window.open(`https://wa.me/62${num}?text=${text}`, "_blank");
+            }, 800);
+        };
+
+        // --- AI CHATBOT (Dimatikan sementara API key tiada, atau anda boleh letak key sendiri) ---
+        window.toggleChat = () => {
+            const modal = document.getElementById('chatModal');
+            modal.classList.toggle('hidden');
+        };
+        window.sendChatMessage = async () => {
+            const input = document.getElementById('chatInput');
+            const chatBox = document.getElementById('chatBox');
+            if (!input.value.trim()) return;
+            chatBox.innerHTML += `<div class="flex gap-2.5 items-start justify-end"><div class="bg-blue-100 text-primary p-3 rounded-2xl rounded-tr-none shadow-sm text-xs max-w-[80%]">${input.value}</div></div>`;
+            input.value = '';
+            chatBox.innerHTML += `<div class="flex gap-2.5 items-start"><div class="bg-red-50 text-red-600 p-2.5 rounded-xl text-xs font-medium">Sistem AI memerlukan API Key rasmi untuk berfungsi sepenuhnya di luar platform. Sila hubungi pendaftaran via WhatsApp.</div></div>`;
+            chatBox.scrollTop = chatBox.scrollHeight;
+        };
+
+        document.getElementById('mobile-menu-button').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        // Mula secara automatik
+        window.onload = initGitHubApp;
+    </script>
+</body>
+</html>
